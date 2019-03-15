@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>flappy bird</title>
+	<style type="text/css">
+	    * {
+	    	margin: 0;
+	    	padding: 0;
+	    }
+		#myCanvas {
+			display: block;
+			margin: 50px auto;
+			border: 1px solid #000;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="myCanvas" width='360px' height='512px'></canvas>
+	<script type="text/javascript" src='js/Game.js'></script>
+	<script type="text/javascript" src='js/Bird.js'></script>
+	<script type="text/javascript" src='js/Background.js'></script>
+	<script type="text/javascript" src='js/Pipe.js'></script>
+	<script type="text/javascript">
+		var imageArr = ['images/bg_day.png', 'images/bird0_0.png', 'images/bird0_1.png', 'images/bird0_2.png', 'images/land.png', 'images/pipe_down.png', 'images/pipe_up.png'];
+
+		function loadIamge(imageArr, callback) {
+			var arr = [];
+			var idx = 0;
+			imageArr.forEach(function(value, index) {		
+				var img = new Image();
+				img.src = value;
+				img.onload = function() {
+					arr[index] = this;
+					idx ++;
+                    if(idx == imageArr.length) {
+                    	callback(arr);
+                    }
+				}
+			})			
+		}
+
+		loadIamge(imageArr, function(arr) {
+            // console.log(arr)
+            var canvas = document.getElementById('myCanvas');
+            var ctx = canvas.getContext('2d');
+            var bird = new Bird(arr.slice(1, 4), 50, 100);
+            var pipe = new Pipe(arr[6], arr[5], 4, 360);
+            var land = new Background(arr[4], 4, 0, 400);
+            var mountain = new Background(arr[0], 2, 0, 0);
+			window.g = new Game(ctx, bird, pipe, land, mountain);
+		});
+	</script>
+</body>
+</html>
